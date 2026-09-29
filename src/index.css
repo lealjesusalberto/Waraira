@@ -2512,33 +2512,51 @@ h1, h2, h3, h4 {
   color: var(--c-green-400);
 }
 
-/* Scanner Viewfinder */
+/* Scanner Viewfinder & Camera */
 .scanner-viewfinder-box {
   position: relative;
-  height: 220px;
-  background: #000;
+  height: 260px;
+  background: #030804;
   border-radius: var(--radius-lg);
   overflow: hidden;
   margin-bottom: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid var(--border-glass-light);
+}
+
+.qr-camera-stream-target {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 1;
+}
+
+.qr-camera-stream-target video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: var(--radius-lg);
 }
 
 .viewfinder-frame {
   position: relative;
-  width: 180px;
-  height: 180px;
+  z-index: 5;
+  width: 200px;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
 }
 
 .vf-corner {
   position: absolute;
-  width: 20px;
-  height: 20px;
-  border-color: var(--c-green-400);
+  width: 22px;
+  height: 22px;
+  border-color: var(--c-yellow-400);
 }
 
 .vf-tl { top: 0; left: 0; border-top: 3px solid; border-left: 3px solid; }
@@ -2551,29 +2569,78 @@ h1, h2, h3, h4 {
   left: 0;
   right: 0;
   height: 2px;
-  background: var(--c-green-400);
-  box-shadow: 0 0 8px var(--c-green-400);
+  background: var(--c-yellow-400);
+  box-shadow: 0 0 10px var(--c-yellow-400);
   animation: laserScan 2s infinite alternate ease-in-out;
 }
 
 @keyframes laserScan {
   from { top: 10px; }
-  to { top: 170px; }
+  to { top: 190px; }
 }
 
-.vf-instruction {
+.vf-camera-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  background: rgba(3, 8, 4, 0.92);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
-  color: #fff;
-  font-size: 11px;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
   text-align: center;
-  padding: 0 10px;
+  color: #fff;
+  font-size: 13px;
+}
+
+.vf-blocked-text {
+  font-size: 12px;
+  color: #cbd5e1;
+  line-height: 1.4;
+  max-width: 340px;
+}
+
+.btn-capture-photo {
+  background: linear-gradient(135deg, var(--c-yellow-500), #d97706);
+  border: none;
+  color: #000;
+  font-weight: 800;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(234, 179, 8, 0.4);
+  transition: transform 0.2s;
+}
+
+.btn-capture-photo:hover {
+  transform: translateY(-1px);
+}
+
+.btn-flip-cam {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  background: rgba(6, 20, 11, 0.85);
+  border: 1px solid var(--border-glass-light);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .vf-cam-icon {
-  color: var(--c-green-400);
+  color: var(--c-yellow-400);
 }
 
 .scanner-quick-select {
