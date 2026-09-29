@@ -259,11 +259,13 @@ function switchView(viewId) {
   const allViews = document.querySelectorAll('.app-view');
   allViews.forEach(view => {
     view.classList.remove('active');
+    view.style.display = 'none';
   });
 
   const targetView = document.getElementById(viewId);
   if (targetView) {
     targetView.classList.add('active');
+    targetView.style.display = '';
   }
 
   // Set active view on body for CSS selectors
@@ -302,7 +304,7 @@ function switchView(viewId) {
     }
   });
 
-  // Handle specific views actions
+  // Handle specific views actions & refresh internal screens data
   if (viewId === 'view-scanner') {
     initCameraScanner();
   } else if (viewId === 'view-station-qrs') {
@@ -312,7 +314,13 @@ function switchView(viewId) {
   } else if (viewId === 'view-history') {
     renderHikesHistory();
   } else if (viewId === 'view-home') {
+    renderCheckpointsCarousel('all');
+    updateUserProfileUI();
     updateActiveHikeBanner();
+  } else if (viewId === 'view-profile') {
+    updateUserProfileUI();
+  } else if (viewId === 'view-active-hike') {
+    updateActiveHikeUI();
   }
 }
 

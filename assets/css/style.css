@@ -412,11 +412,15 @@ html, body {
    VIEW 1: ONBOARDING / LANDING (Premium Hiking Cover & Responsive Experience)
    ========================================================================== */
 #view-onboarding {
+  display: none;
   position: relative;
   width: 100%;
   border-radius: var(--radius-xl);
   overflow: hidden;
   min-height: calc(100vh - var(--navbar-height) - 40px);
+}
+#view-onboarding.active {
+  display: block;
 }
 
 /* Full-Bleed Hiking Cover Backdrop */
@@ -809,7 +813,11 @@ html, body {
     display: none !important;
   }
 
-  #view-onboarding {
+  #view-onboarding:not(.active) {
+    display: none !important;
+  }
+
+  #view-onboarding.active {
     border-radius: 0 !important;
     min-height: 100vh !important;
     min-height: 100dvh !important;
@@ -886,7 +894,7 @@ html, body {
   }
 
   .onboarding-title {
-    font-size: 32px !important;
+    font-size: 30px !important;
     line-height: 1.15 !important;
     font-weight: 800;
     letter-spacing: -0.5px;
@@ -919,56 +927,62 @@ html, body {
     box-sizing: border-box;
   }
 
+  /* Single-column vertical list on mobile so Contacto and PWA never overflow */
   .onboarding-features-grid {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
+    display: flex !important;
+    flex-direction: column !important;
     gap: 8px !important;
     width: 100% !important;
     max-width: 100% !important;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
   }
 
   .feat-card {
-    padding: 8px 10px !important;
-    background: rgba(4, 24, 13, 0.68) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 9px 12px !important;
+    background: rgba(4, 24, 13, 0.72) !important;
     backdrop-filter: blur(16px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
     border-radius: var(--radius-md) !important;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    box-sizing: border-box;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
   }
 
   .feat-icon-badge {
-    width: 32px !important;
-    height: 32px !important;
-    flex-shrink: 0;
-    border-radius: 8px;
+    width: 36px !important;
+    height: 36px !important;
+    flex-shrink: 0 !important;
+    border-radius: 9px !important;
   }
 
   .feat-icon-badge svg {
-    width: 16px !important;
-    height: 16px !important;
+    width: 18px !important;
+    height: 18px !important;
   }
 
   .feat-text {
-    min-width: 0;
-    flex: 1;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
   }
 
   .feat-text strong {
-    font-size: 11px !important;
-    line-height: 1.2;
-    display: block;
-    color: #fff;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 12.5px !important;
+    line-height: 1.25 !important;
+    display: block !important;
+    color: #fff !important;
+    white-space: normal !important;
+    word-break: break-word !important;
   }
 
   .feat-text span {
-    display: none !important; /* Hide long paragraphs on mobile so majestic mountain photo remains clear */
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    display: block !important;
+    color: #cbd5e1 !important;
+    white-space: normal !important;
   }
 
   .onboarding-cta-wrap {
