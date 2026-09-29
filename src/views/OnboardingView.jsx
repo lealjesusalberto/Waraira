@@ -1,73 +1,52 @@
 import React from 'react';
 import { useApp } from '../context/AppContext';
-import { ArrowRight, Mountain, ShieldCheck, UserCheck } from 'lucide-react';
+import { ArrowRight, UserCheck } from 'lucide-react';
 
 export default function OnboardingView() {
   const { setCurrentView } = useApp();
 
   return (
-    <div className="splash-cover-page">
+    <div className="splash-screen-root">
       
-      {/* Full-Bleed Background with Soft Gradient (Photo clearly visible) */}
-      <div className="splash-bg-wrapper">
+      {/* Full-Bleed Background Image (Clear, soft vignette) */}
+      <div className="splash-bg-cover">
         <img 
           src="/assets/images/hero.jpg" 
           alt="El Ávila Waraira Repano" 
-          className="splash-hero-img" 
+          className="splash-bg-photo" 
         />
-        <div className="splash-soft-gradient"></div>
+        <div className="splash-gradient-overlay"></div>
       </div>
 
-      {/* Minimalist Splashscreen Content */}
-      <div className="splash-content-box animate-pop">
-        
-        {/* Top Floating Badge */}
-        <div className="splash-inparques-badge">
-          <img src="/assets/images/logo.jpg" alt="Logo Ávila Pass" className="splash-logo-mini" />
-          <span>INPARQUES • Caracas • Waraira Repano</span>
+      {/* Subtle Top Header */}
+      <div className="splash-minimal-header animate-pop">
+        <div className="splash-brand-badge">
+          <img src="/assets/images/logo.jpg" alt="Logo" className="splash-mini-logo" />
+          <span>INPARQUES</span>
         </div>
+        <h1 className="splash-minimal-title">Ávila Pass</h1>
+        <span className="splash-minimal-sub">Parque Nacional Waraira Repano</span>
+      </div>
 
-        {/* Hero Title & Subtitle */}
-        <div className="splash-text-center">
-          <h1 className="splash-main-title">
-            Ávila <span className="highlight-green">Pass</span>
-          </h1>
-          <p className="splash-tagline">
-            Senderismo seguro, registro de ascensos y retorno protegido en el Waraira Repano.
-          </p>
-        </div>
+      {/* Two Small Action Buttons Side by Side at the Very Bottom */}
+      <div className="splash-bottom-actions animate-pop">
+        <button 
+          className="btn-splash-sm btn-splash-glass"
+          onClick={() => setCurrentView('auth')}
+          title="Ficha preventiva de senderista"
+        >
+          <UserCheck size={14} />
+          <span>Mi Ficha</span>
+        </button>
 
-        {/* Live Status Pill */}
-        <div className="splash-status-pill">
-          <span className="pulse-dot-green"></span>
-          <span>5 Casetas Activas • Clima en Montaña: 21°C</span>
-        </div>
-
-        {/* Direct Action Buttons */}
-        <div className="splash-actions-group">
-          <button 
-            className="btn-splash-primary btn-glow"
-            onClick={() => setCurrentView('home')}
-          >
-            <span>Ingresar a Ávila Pass</span>
-            <ArrowRight size={20} />
-          </button>
-
-          <button 
-            className="btn-splash-secondary"
-            onClick={() => setCurrentView('auth')}
-          >
-            <UserCheck size={16} />
-            <span>Ficha de Senderista</span>
-          </button>
-        </div>
-
-        {/* Subtle Bottom Trust Note */}
-        <div className="splash-trust-note">
-          <ShieldCheck size={14} className="text-green" />
-          <span>Control Preventivo Oficial • 100% PWA Offline</span>
-        </div>
-
+        <button 
+          className="btn-splash-sm btn-splash-glow"
+          onClick={() => setCurrentView('home')}
+          title="Ingresar a puestos y rutas"
+        >
+          <span>Ingresar</span>
+          <ArrowRight size={14} />
+        </button>
       </div>
 
     </div>
