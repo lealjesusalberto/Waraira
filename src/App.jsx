@@ -41,16 +41,16 @@ export default function App() {
   return (
     <div className="app-root-container">
       
-      {/* Universal Top Glass Navbar */}
-      <Navbar />
+      {/* Universal Top Glass Navbar (Hidden on Splashscreen) */}
+      {currentView !== 'onboarding' && <Navbar />}
 
       {/* Main Viewport Container */}
-      <main className="app-main-viewport">
+      <main className={`app-main-viewport ${currentView === 'onboarding' ? 'viewport-splash' : ''}`}>
         {renderView()}
       </main>
 
-      {/* Mobile Floating Bottom Bar */}
-      <BottomNav />
+      {/* Mobile Floating Bottom Bar (Hidden on Splashscreen) */}
+      {currentView !== 'onboarding' && <BottomNav />}
 
       {/* Global Notifications */}
       <Toast />
