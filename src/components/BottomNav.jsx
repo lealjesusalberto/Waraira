@@ -22,16 +22,6 @@ export default function BottomNav() {
       </button>
 
       <button 
-        className="bnav-item bnav-scan-primary"
-        onClick={() => setModalScanner({ isOpen: true, stationId: null })}
-      >
-        <div className="bnav-scan-circle">
-          <QrCode size={22} />
-        </div>
-        <span>Escanear</span>
-      </button>
-
-      <button 
         className={`bnav-item ${currentView === 'active-hike' ? 'active' : ''}`}
         onClick={() => setCurrentView('active-hike')}
       >
@@ -40,6 +30,16 @@ export default function BottomNav() {
           {activeHike && <span className="bnav-pulse-dot"></span>}
         </div>
         <span>Mi Ruta</span>
+      </button>
+
+      <button 
+        className="bnav-item bnav-scan-primary"
+        onClick={() => setModalScanner({ isOpen: true, stationId: null })}
+      >
+        <div className="bnav-scan-circle">
+          <QrCode size={22} />
+        </div>
+        <span>Escanear</span>
       </button>
 
       <button 
