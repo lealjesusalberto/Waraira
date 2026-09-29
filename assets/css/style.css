@@ -72,7 +72,10 @@
 
 html, body {
   width: 100%;
+  max-width: 100vw;
   min-height: 100%;
+  overflow-x: hidden;
+  position: relative;
   background-color: var(--bg-dark);
   font-family: var(--font-body);
   color: var(--text-primary);
@@ -110,6 +113,9 @@ html, body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* ==========================================================================
@@ -286,8 +292,12 @@ html, body {
   color: #fff;
 }
 
-/* Hide desktop navbar menu on mobile */
+/* Hide desktop navbar menu and adjust actions on mobile */
 @media (max-width: 860px) {
+  .navbar-container {
+    padding: 0 12px;
+    gap: 8px;
+  }
   .navbar-desktop-menu {
     display: none;
   }
@@ -295,6 +305,30 @@ html, body {
     display: none;
   }
   .network-badge {
+    display: none;
+  }
+  .btn-nav-scan span {
+    display: none;
+  }
+  .btn-nav-scan {
+    padding: 8px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    justify-content: center;
+  }
+  .brand-title {
+    font-size: 16px;
+  }
+  .brand-subtitle {
+    font-size: 9px;
+  }
+  .app-main-content {
+    padding: 12px 10px 40px;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  .ambient-glow {
     display: none;
   }
 }
@@ -315,6 +349,8 @@ html, body {
 .app-view {
   display: none;
   width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.25s ease, transform 0.25s ease;
@@ -373,15 +409,53 @@ html, body {
 }
 
 /* ==========================================================================
-   VIEW 1: ONBOARDING / LANDING (Responsive Split on Web, Immersive on Mobile)
+   VIEW 1: ONBOARDING / LANDING (Premium Hiking Cover & Responsive Experience)
    ========================================================================== */
+#view-onboarding {
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  min-height: calc(100vh - var(--navbar-height) - 40px);
+}
+
+/* Full-Bleed Hiking Cover Backdrop */
+.onboarding-cover-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.onboarding-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  filter: brightness(0.65) saturate(1.2);
+  transform: scale(1.02);
+}
+.onboarding-cover-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(4, 20, 11, 0.45) 0%,
+    rgba(6, 26, 16, 0.78) 40%,
+    rgba(4, 18, 10, 0.96) 95%
+  );
+  backdrop-filter: blur(1.5px);
+}
+
 .onboarding-web-container {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
   gap: 40px;
   align-items: center;
-  min-height: calc(100vh - 120px);
-  padding: 20px 0;
+  min-height: calc(100vh - 140px);
+  padding: 30px 24px;
 }
 .onboarding-text-column {
   display: flex;
@@ -393,8 +467,8 @@ html, body {
   align-items: center;
   gap: 8px;
   padding: 6px 14px;
-  background: rgba(10, 46, 27, 0.75);
-  backdrop-filter: blur(12px);
+  background: rgba(10, 46, 27, 0.85);
+  backdrop-filter: blur(14px);
   border: 1px solid var(--border-green);
   border-radius: var(--radius-full);
   font-size: 11px;
@@ -403,6 +477,7 @@ html, body {
   color: var(--c-yellow-400);
   text-transform: uppercase;
   width: fit-content;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 .brand-logo-small {
   width: 22px;
@@ -412,11 +487,12 @@ html, body {
 }
 .onboarding-title {
   font-family: var(--font-display);
-  font-size: 42px;
+  font-size: 40px;
   font-weight: 800;
   line-height: 1.15;
   color: #ffffff;
   letter-spacing: -0.8px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 .highlight-green {
   color: var(--c-green-400);
@@ -425,31 +501,60 @@ html, body {
   color: var(--c-yellow-400);
 }
 .onboarding-desc {
-  font-size: 15px;
+  font-size: 14.5px;
   color: #cbd5e1;
   line-height: 1.6;
   max-width: 580px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
+
+/* Mountain Status Floater Bar */
+.onboarding-mountain-status-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(7, 24, 14, 0.8);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-green);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  color: #fff;
+  width: fit-content;
+  max-width: 100%;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+.oms-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.oms-highlight {
+  color: var(--c-yellow-400);
+  font-weight: 700;
+}
+
 .onboarding-features-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin: 10px 0;
+  margin: 6px 0;
 }
 .feat-card {
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--bg-card);
-  backdrop-filter: blur(14px);
+  background: rgba(12, 43, 26, 0.68);
+  backdrop-filter: blur(16px);
   border: 1px solid var(--border-glass);
   padding: 12px 14px;
   border-radius: var(--radius-lg);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 .feat-icon-badge {
-  width: 46px;
-  height: 46px;
-  border-radius: 14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -487,26 +592,26 @@ html, body {
 .feat-text strong {
   display: block;
   font-family: var(--font-display);
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #fff;
 }
 .feat-text span {
-  font-size: 12px;
-  color: var(--text-secondary);
+  font-size: 11.5px;
+  color: #cbd5e1;
 }
 
-/* Action Pill Button (Matching Reference Design) */
+/* Action Pill Button */
 .onboarding-cta-wrap {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   max-width: 480px;
-  margin-top: 10px;
+  margin-top: 6px;
 }
 .btn-pill-get-started {
   width: 100%;
-  height: 62px;
+  height: 60px;
   background: #ffffff;
   color: var(--c-green-950);
   border: none;
@@ -519,16 +624,16 @@ html, body {
   font-size: 16px;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 24px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 24px rgba(255, 255, 255, 0.25);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .btn-pill-get-started:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 255, 255, 0.35);
 }
 .btn-circle-icon {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   background: var(--c-green-900);
   color: var(--c-green-400);
@@ -555,10 +660,14 @@ html, body {
 .onboarding-links {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 .btn-demo-action {
-  background: rgba(245, 158, 11, 0.15);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(245, 158, 11, 0.18);
   border: 1px solid var(--border-yellow);
   color: var(--c-yellow-300);
   font-family: var(--font-display);
@@ -591,7 +700,7 @@ html, body {
   position: relative;
   width: 100%;
   max-width: 440px;
-  height: 560px;
+  height: 540px;
   border-radius: var(--radius-xl);
   overflow: hidden;
   border: 1px solid var(--border-glass);
@@ -666,20 +775,256 @@ html, body {
   color: #cbd5e1;
 }
 
-/* Responsive Onboarding for Mobile */
+/* Responsive Onboarding for Mobile (Immersive High-End Hiking Cover Experience) */
 @media (max-width: 860px) {
+  body:has(#view-onboarding.active) .app-navbar-main,
+  body[data-active-view="view-onboarding"] .app-navbar-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: transparent !important;
+    border-bottom: none !important;
+    backdrop-filter: none !important;
+    z-index: 50;
+  }
+
+  body:has(#view-onboarding.active) .navbar-right-actions,
+  body[data-active-view="view-onboarding"] .navbar-right-actions {
+    display: none !important;
+  }
+
+  body:has(#view-onboarding.active) .app-main-content,
+  body[data-active-view="view-onboarding"] .app-main-content {
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  body:has(#view-onboarding.active) .app-bottom-nav,
+  body[data-active-view="view-onboarding"] .app-bottom-nav,
+  body:has(#view-auth.active) .app-bottom-nav,
+  body[data-active-view="view-auth"] .app-bottom-nav {
+    display: none !important;
+  }
+
+  #view-onboarding {
+    border-radius: 0 !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    position: relative;
+    margin: 0 !important;
+  }
+
+  .onboarding-cover-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .onboarding-cover-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+    filter: brightness(0.92) contrast(1.08) saturate(1.18) !important;
+    transform: scale(1.02);
+  }
+
+  .onboarding-cover-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(4, 18, 10, 0.72) 0%,
+      rgba(4, 18, 10, 0.2) 28%,
+      rgba(4, 18, 10, 0.35) 55%,
+      rgba(4, 18, 10, 0.88) 82%,
+      rgba(4, 18, 10, 0.98) 100%
+    ) !important;
+  }
+
   .onboarding-web-container {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 16px;
+    padding: 72px 18px 30px !important;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
   }
+
+  .onboarding-text-column {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .brand-pill {
+    background: rgba(4, 26, 14, 0.85);
+    border: 1px solid rgba(74, 222, 128, 0.45);
+    color: var(--c-yellow-400);
+    font-size: 10px;
+    padding: 5px 12px;
+    backdrop-filter: blur(12px);
+  }
+
   .onboarding-title {
-    font-size: 30px;
+    font-size: 32px !important;
+    line-height: 1.15 !important;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.85);
+    margin-top: 2px;
   }
+
+  .onboarding-desc {
+    font-size: 13px !important;
+    line-height: 1.45 !important;
+    color: rgba(241, 245, 249, 0.94) !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+    max-width: 100%;
+  }
+
+  .onboarding-mountain-status-bar {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 6px 12px !important;
+    border-radius: var(--radius-full) !important;
+    padding: 7px 14px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    background: rgba(4, 20, 11, 0.82) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(74, 222, 128, 0.35) !important;
+    font-size: 11px !important;
+    box-sizing: border-box;
+  }
+
   .onboarding-features-grid {
-    grid-template-columns: 1fr;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
   }
+
+  .feat-card {
+    padding: 8px 10px !important;
+    background: rgba(4, 24, 13, 0.68) !important;
+    backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    border-radius: var(--radius-md) !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+  .feat-icon-badge {
+    width: 32px !important;
+    height: 32px !important;
+    flex-shrink: 0;
+    border-radius: 8px;
+  }
+
+  .feat-icon-badge svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .feat-text {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .feat-text strong {
+    font-size: 11px !important;
+    line-height: 1.2;
+    display: block;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .feat-text span {
+    display: none !important; /* Hide long paragraphs on mobile so majestic mountain photo remains clear */
+  }
+
+  .onboarding-cta-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: auto;
+    padding-top: 14px;
+    gap: 10px;
+  }
+
+  .btn-pill-get-started {
+    height: 56px !important;
+    font-size: 16px !important;
+    padding: 4px 18px 4px 6px !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6), 0 0 24px rgba(74, 222, 128, 0.35) !important;
+  }
+
+  .btn-circle-icon {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .btn-text {
+    font-size: 15px !important;
+    font-weight: 800;
+  }
+
+  .onboarding-links {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .btn-demo-action {
+    justify-content: center !important;
+    width: 100% !important;
+    padding: 11px 16px !important;
+    font-size: 13px !important;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    backdrop-filter: blur(14px) !important;
+    color: #fff !important;
+    border-radius: var(--radius-full);
+  }
+
+  .text-link {
+    text-align: center !important;
+    font-size: 12px !important;
+    color: var(--c-yellow-300) !important;
+    margin-top: 2px;
+  }
+
   .onboarding-visual-column {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -3086,4 +3431,401 @@ html, body {
   align-items: center;
   justify-content: center;
   color: var(--c-yellow-400);
+}
+
+/* ==========================================================================
+   COMPREHENSIVE MOBILE OVERFLOW FIXES & RESPONSIVENESS
+   ========================================================================== */
+
+/* Universal media and container constraints */
+img, svg, canvas, video {
+  max-width: 100% !important;
+}
+
+html, body {
+  width: 100% !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  position: relative;
+}
+
+.app-root-wrapper {
+  width: 100% !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+}
+
+.app-main-content {
+  width: 100% !important;
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+}
+
+input, select, textarea {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Ambient glow mobile clamping */
+@media (max-width: 768px) {
+  .ambient-glow {
+    max-width: 80vw !important;
+    max-height: 80vw !important;
+    opacity: 0.5;
+  }
+}
+
+/* Mobile Screens <= 768px */
+@media (max-width: 768px) {
+  /* Prevent horizontal spill on main content */
+  .app-main-content {
+    padding: 12px 12px 88px;
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  /* Universal Navbar adjustments */
+  .navbar-container {
+    padding: 0 12px;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .brand-text-col {
+    min-width: 0;
+  }
+  .brand-title {
+    font-size: 15px;
+    white-space: nowrap;
+  }
+  .brand-subtitle {
+    display: none !important;
+  }
+  .navbar-right-actions {
+    gap: 6px;
+  }
+  .network-badge {
+    display: none !important;
+  }
+  .btn-nav-scan span {
+    display: none !important;
+  }
+  .btn-nav-scan {
+    padding: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .user-chip-name {
+    display: none !important;
+  }
+  .user-chip-btn {
+    padding: 2px;
+  }
+
+  /* Form layouts */
+  .form-row-2 {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+  .phone-input-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+  .phone-input-wrap input {
+    min-width: 0 !important;
+    flex: 1 1 0% !important;
+    width: 100% !important;
+  }
+  .emergency-contact-box {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Active Hike Tracker on mobile */
+  .active-hike-hero-wrapper {
+    min-height: 480px;
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .active-hike-nav {
+    padding: 10px 12px;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .active-checkpoint-pill {
+    max-width: 50% !important;
+    min-width: 0 !important;
+    padding: 4px 8px;
+  }
+  .active-checkpoint-pill .p-title {
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .active-checkpoint-pill .p-sub {
+    font-size: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .live-status-floating-pill {
+    max-width: 90% !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 11px;
+  }
+  .safety-metrics-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .sheet-checkpoint-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+  }
+  .sheet-elevation-badge {
+    align-self: flex-start;
+  }
+  .gps-coords-strip {
+    font-size: 11px;
+    word-break: break-all;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .btn-checkout-primary {
+    font-size: 14px;
+    padding: 12px;
+    width: 100%;
+  }
+
+  /* Home Dashboard on mobile */
+  .home-dashboard-layout {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .home-col-main, .home-col-sidebar {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+  .active-hike-alert-banner {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .active-hike-alert-banner button {
+    width: 100% !important;
+    text-align: center !important;
+  }
+  .hike-alert-left {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  .search-bar-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+  .search-input-box {
+    min-width: 0 !important;
+    flex: 1 1 0% !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .search-input-box input {
+    min-width: 0 !important;
+    flex: 1 1 0% !important;
+    width: 100% !important;
+    font-size: 13px;
+  }
+  .checkpoints-responsive-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px;
+    width: 100% !important;
+  }
+  .checkpoint-card {
+    height: 200px;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+  .scanner-promo-card {
+    flex-direction: column-reverse !important;
+    text-align: center;
+    padding: 16px;
+    gap: 14px;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .promo-qr-art {
+    margin: 0 auto;
+    width: 72px;
+    height: 72px;
+  }
+  .btn-scanner-cta {
+    width: 100% !important;
+    justify-content: center;
+  }
+  .weather-card-top {
+    flex-direction: column !important;
+    gap: 12px;
+    width: 100%;
+  }
+  .weather-sun-info {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    align-items: center;
+  }
+
+  /* QR Scanner on mobile */
+  .scanner-body-layout {
+    grid-template-columns: 1fr !important;
+    padding: 12px;
+    gap: 14px;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .scanner-viewfinder-container {
+    min-height: 260px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .scan-target-frame {
+    width: 180px;
+    height: 180px;
+  }
+  .sim-buttons-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+    width: 100% !important;
+  }
+  .btn-sim-qr {
+    padding: 10px 12px;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* History on mobile */
+  .history-stats-banner {
+    padding: 12px 6px !important;
+    gap: 4px !important;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .h-stat-item {
+    min-width: 0;
+    flex: 1;
+  }
+  .h-stat-num {
+    font-size: 18px !important;
+  }
+  .h-stat-label {
+    font-size: 9px !important;
+    text-align: center;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+  .hic-meta-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+  }
+
+  /* Guardaparques Monitor on mobile */
+  .ranger-kpi-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+    width: 100%;
+  }
+  .ranger-search-box {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .ranger-search-box input {
+    min-width: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .ranger-hikers-list {
+    grid-template-columns: 1fr !important;
+    gap: 10px;
+    width: 100%;
+  }
+  .ranger-hiker-card {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 12px;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .rh-actions {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+  .rh-actions button {
+    width: 100% !important;
+  }
+
+  /* Station QR Posters on mobile */
+  .station-posters-wrap {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+    width: 100% !important;
+  }
+  .qr-poster-card {
+    padding: 16px 12px;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* Modals on mobile */
+  .modal-sheet-card {
+    width: calc(100% - 24px) !important;
+    max-width: 480px !important;
+    max-height: 90vh;
+    padding: 18px 14px;
+    overflow-y: auto;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .modal-checkpoint-info {
+    gap: 10px;
+  }
+  .modal-checkpoint-info h3 {
+    font-size: 16px;
+  }
+  .sos-actions-group {
+    gap: 8px;
+  }
+  .btn-sos-call, .btn-sos-whatsapp, .btn-sos-secondary {
+    font-size: 12px;
+    padding: 10px 12px;
+    height: 48px;
+  }
 }

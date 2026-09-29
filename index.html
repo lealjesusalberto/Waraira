@@ -20,7 +20,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- CSS Styles with Cache-Buster -->
-  <link rel="stylesheet" href="assets/css/style.css?v=4.0">
+  <link rel="stylesheet" href="assets/css/style.css?v=4.2">
   <script>
     // Force cache purge on update
     if ('serviceWorker' in navigator) {
@@ -31,7 +31,7 @@
     if ('caches' in window) {
       caches.keys().then(names => {
         names.forEach(name => {
-          if (name !== 'avila-pass-v4') caches.delete(name);
+          if (name !== 'avila-pass-v4.2') caches.delete(name);
         });
       });
     }
@@ -118,6 +118,12 @@
            VIEW 1: ONBOARDING / LANDING (Responsive Web & Mobile)
            ============================================== -->
       <section id="view-onboarding" class="app-view active">
+        <!-- Full-Bleed Cinematic Hiking Cover Background -->
+        <div class="onboarding-cover-backdrop">
+          <img src="assets/images/hero.jpg" alt="Hiking Cover Waraira Repano" class="onboarding-cover-img">
+          <div class="onboarding-cover-gradient"></div>
+        </div>
+
         <div class="onboarding-web-container">
           <!-- Left Column / Content -->
           <div class="onboarding-text-column">
@@ -133,6 +139,18 @@
             <p class="onboarding-desc">
               Registro digital oficial de entrada y salida mediante códigos QR para senderistas del Waraira Repano. Control de ascensos, geolocalización preventiva y aviso automático a familiares en caso de extravío.
             </p>
+
+            <!-- Live Mountain Weather Floater Bar -->
+            <div class="onboarding-mountain-status-bar">
+              <div class="oms-item">
+                <span class="pulse-dot-green"></span>
+                <span>Puestos Activos: Sabas Nieves • La Julia • Los Venados</span>
+              </div>
+              <div class="oms-item oms-highlight">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>21°C • Límite Descenso: 17:30</span>
+              </div>
+            </div>
 
             <!-- Features Grid with Custom Vector Icons (No Emojis) -->
             <div class="onboarding-features-grid">
@@ -1380,6 +1398,6 @@
   <div id="toast-container" class="toast-container"></div>
 
   <!-- Main JavaScript App with Cache-Buster -->
-  <script src="assets/js/app.js?v=4.0"></script>
+  <script src="assets/js/app.js?v=4.2"></script>
 </body>
 </html>

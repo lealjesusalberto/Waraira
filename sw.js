@@ -1,4 +1,4 @@
-const CACHE_NAME = 'avila-pass-v4';
+const CACHE_NAME = 'avila-pass-v4.2';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();

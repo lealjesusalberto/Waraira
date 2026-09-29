@@ -266,6 +266,22 @@ function switchView(viewId) {
     targetView.classList.add('active');
   }
 
+  // Set active view on body for CSS selectors
+  document.body.dataset.activeView = viewId;
+
+  // Manage mobile bottom navigation visibility (hide on onboarding & auth)
+  const bottomNav = document.getElementById('app-bottom-nav');
+  if (bottomNav) {
+    if (viewId === 'view-onboarding' || viewId === 'view-auth') {
+      bottomNav.style.display = 'none';
+    } else {
+      bottomNav.style.display = '';
+    }
+  }
+
+  // Reset scroll position on view switch
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
   // Update bottom navigation active item
   const navItems = document.querySelectorAll('.nav-item');
   navItems.forEach(item => {
@@ -1111,6 +1127,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 2. Render Initial Components
   renderCheckpointsCarousel('all');
+
+  // Initialize initial active view state & navigation visibility
+  const activeViewEl = document.querySelector('.app-view.active');
+  switchView(activeViewEl ? activeViewEl.id : 'view-onboarding');
 
   // 3. Status Bar Clock Update
   function updateClock() {
