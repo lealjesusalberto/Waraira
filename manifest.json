@@ -1,0 +1,25 @@
+{
+  "name": "Ávila Pass - Registro y Seguridad Waraira Repano",
+  "short_name": "Ávila Pass",
+  "description": "PWA para registro de entrada y salida de excursionistas en el Parque Nacional El Ávila (Waraira Repano), Caracas.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#061a10",
+  "theme_color": "#14532d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./assets/images/logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./assets/images/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["travel", "sports", "safety"]
+}
