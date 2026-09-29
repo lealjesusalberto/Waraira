@@ -2515,40 +2515,34 @@ h1, h2, h3, h4 {
 /* Scanner Viewfinder & Camera */
 .scanner-viewfinder-box {
   position: relative;
-  height: 260px;
+  width: 100%;
+  height: 250px;
   background: #030804;
   border-radius: var(--radius-lg);
   overflow: hidden;
   margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border: 1px solid var(--border-glass-light);
+  box-sizing: border-box;
 }
 
-.qr-camera-stream-target {
+.scanner-live-video {
   position: absolute;
-  inset: 0;
-  width: 100% !important;
-  height: 100% !important;
-  z-index: 1;
-}
-
-.qr-camera-stream-target video {
+  top: 0;
+  left: 0;
   width: 100% !important;
   height: 100% !important;
   object-fit: cover !important;
-  border-radius: var(--radius-lg);
+  z-index: 1;
 }
 
 .viewfinder-frame {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 5;
-  width: 200px;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 180px;
+  height: 180px;
   pointer-events: none;
 }
 

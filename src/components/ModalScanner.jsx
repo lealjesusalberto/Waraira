@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../context/AppContext';
 import { STATIONS } from '../data/stations';
-import { Html5Qrcode } from 'html5-qrcode';
+import jsQR from 'jsqr';
 import { 
   X, 
   Camera, 
@@ -10,34 +10,35 @@ import {
   MapPin, 
   AlertCircle, 
   RefreshCw, 
-  Upload, 
   Image as ImageIcon 
 } from 'lucide-react';
 
 export default function ModalScanner() {
   const { modalScanner, setModalScanner, activeHike, setModalCheckin, setModalCheckout, showToast } = useApp();
-  const [cameraState, setCameraState] = useState('initializing'); // 'initializing' | 'active' | 'blocked'
-  const [errorMessage, setErrorMessage] = useState('');
+  const [cameraActive, setCameraActive] = useState(false);
+  const [cameraError, setCameraError] = useState('');
   const [facingMode, setFacingMode] = useState('environment'); // 'environment' | 'user'
-  const scannerRef = useRef(null);
+
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const streamRef = useRef(null);
+  const animationFrameRef = useRef(null);
   const fileInputRef = useRef(null);
+  const isScanningRef = useRef(false);
 
   // Process decoded QR string
   const handleDecodedCode = (decodedText) => {
-    // Stop scanner if active
-    if (scannerRef.current) {
-      try {
-        scannerRef.current.stop().catch(() => {});
-      } catch (e) {}
-    }
+    if (!isScanningRef.current) return;
+    isScanningRef.current = false;
+
+    // Stop camera stream immediately
+    stopCamera();
 
     setModalScanner({ isOpen: false, stationId: null });
 
-    // Try to find station by ID or match text
     const textUpper = (decodedText || '').toUpperCase();
     let matchedStation = STATIONS.find(s => textUpper.includes(s.id));
     if (!matchedStation) {
-      // Find by station name
       matchedStation = STATIONS.find(s => textUpper.includes(s.name.toUpperCase().split(' ')[1] || ''));
     }
     if (!matchedStation) {
@@ -53,100 +54,141 @@ export default function ModalScanner() {
     }
   };
 
-  // Start live camera scanner
-  useEffect(() => {
-    if (!modalScanner.isOpen) {
-      if (scannerRef.current) {
-        try {
-          scannerRef.current.stop().catch(() => {});
-          scannerRef.current = null;
-        } catch (e) {}
+  const stopCamera = () => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => {
+        track.stop();
+      });
+      streamRef.current = null;
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    setCameraActive(false);
+  };
+
+  // Continuous frame scanner using jsQR
+  const scanFrame = () => {
+    if (!isScanningRef.current) return;
+
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+
+    if (video && canvas && video.readyState === video.HAVE_ENOUGH_DATA) {
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const code = jsQR(imageData.data, imageData.width, imageData.height, {
+        inversionAttempts: 'dontInvert'
+      });
+
+      if (code && code.data) {
+        handleDecodedCode(code.data);
+        return;
       }
-      return;
     }
 
-    setCameraState('initializing');
-    setErrorMessage('');
-
-    // Wait for DOM element #qr-camera-box to mount
-    const timer = setTimeout(() => {
-      try {
-        const scanner = new Html5Qrcode('qr-camera-box');
-        scannerRef.current = scanner;
-
-        const config = {
-          fps: 15,
-          qrbox: { width: 220, height: 220 },
-          aspectRatio: 1.0
-        };
-
-        scanner.start(
-          { facingMode: facingMode },
-          config,
-          (decodedText) => {
-            handleDecodedCode(decodedText);
-          },
-          () => {
-            // Scanning in progress
-          }
-        )
-        .then(() => {
-          setCameraState('active');
-        })
-        .catch((err) => {
-          console.warn('Camera access issue:', err);
-          setCameraState('blocked');
-          if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
-            setErrorMessage('Tu navegador móvil requiere HTTPS para abrir el video en vivo en red local. Puedes tomar foto directa del QR o usar los selectores rápidos:');
-          } else {
-            setErrorMessage('No se pudo acceder al lente de la cámara (permiso denegado o dispositivo en uso).');
-          }
-        });
-      } catch (e) {
-        console.warn('Html5Qrcode init error:', e);
-        setCameraState('blocked');
-        setErrorMessage('Cámara no disponible en este navegador.');
-      }
-    }, 250);
-
-    return () => {
-      clearTimeout(timer);
-      if (scannerRef.current) {
-        try {
-          scannerRef.current.stop().catch(() => {});
-          scannerRef.current = null;
-        } catch (e) {}
-      }
-    };
-  }, [modalScanner.isOpen, facingMode]);
-
-  // Handle photo/file upload scan fallback
-  const handleFileUpload = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    try {
-      showToast('Analizando código QR de la fotografía...', 'info');
-      const html5QrCode = new Html5Qrcode('qr-camera-box');
-      const result = await html5QrCode.scanFile(file, true);
-      handleDecodedCode(result);
-    } catch (err) {
-      showToast('No se detectó un código QR legible en la imagen. Selecciona el puesto manualmente.', 'warning');
+    if (isScanningRef.current) {
+      animationFrameRef.current = requestAnimationFrame(scanFrame);
     }
   };
 
-  const toggleCameraFacing = () => {
-    if (scannerRef.current) {
-      try {
-        scannerRef.current.stop().catch(() => {});
-      } catch (e) {}
+  // Start Camera
+  useEffect(() => {
+    if (!modalScanner.isOpen) {
+      isScanningRef.current = false;
+      stopCamera();
+      return;
     }
+
+    isScanningRef.current = true;
+    setCameraError('');
+    setCameraActive(false);
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setCameraError('Tu navegador no soporta acceso directo a la cámara por video.');
+      return;
+    }
+
+    const constraints = {
+      video: {
+        facingMode: { ideal: facingMode },
+        width: { ideal: 640 },
+        height: { ideal: 480 }
+      },
+      audio: false
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints)
+      .then(stream => {
+        streamRef.current = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play().then(() => {
+            setCameraActive(true);
+            animationFrameRef.current = requestAnimationFrame(scanFrame);
+          }).catch(err => {
+            console.warn('Video play error:', err);
+          });
+        }
+      })
+      .catch(err => {
+        console.warn('getUserMedia error:', err);
+        if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+          setCameraError('El navegador móvil bloquea la cámara web en HTTP local. Puedes usar el botón de tomar foto o la simulación rápida:');
+        } else {
+          setCameraError('Permiso de cámara no concedido o lente ocupado por otra app.');
+        }
+      });
+
+    return () => {
+      isScanningRef.current = false;
+      stopCamera();
+    };
+  }, [modalScanner.isOpen, facingMode]);
+
+  // Decode from native camera photo upload
+  const handlePhotoFile = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    showToast('Analizando fotografía del código QR...', 'info');
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = canvasRef.current || document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+        const imageData = ctx.getImageData(0, 0, img.width, img.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
+        if (code && code.data) {
+          handleDecodedCode(code.data);
+        } else {
+          showToast('No se detectó un código QR nítido. Puedes seleccionar el puesto manualmente abajo.', 'warning');
+        }
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const toggleCameraFacing = () => {
+    stopCamera();
     setFacingMode(prev => prev === 'environment' ? 'user' : 'environment');
   };
 
   const handleSimulateScan = (stId) => {
-    const station = STATIONS.find(s => s.id === stId) || STATIONS[0];
-    handleDecodedCode(station.id);
+    handleDecodedCode(stId);
   };
 
   if (!modalScanner.isOpen) return null;
@@ -170,13 +212,22 @@ export default function ModalScanner() {
           </button>
         </div>
 
-        {/* Viewfinder & Video Stream Box */}
+        {/* Viewfinder Screen (Strict single box layout) */}
         <div className="scanner-viewfinder-box">
           
-          {/* HTML5 QR Camera Element */}
-          <div id="qr-camera-box" className="qr-camera-stream-target"></div>
+          {/* Native Live Video Feed */}
+          <video 
+            ref={videoRef} 
+            autoPlay 
+            playsInline 
+            muted 
+            className="scanner-live-video"
+          />
 
-          {/* Viewfinder Target Overlays */}
+          {/* Off-screen hidden canvas for jsQR analysis */}
+          <canvas ref={canvasRef} style={{ display: 'none' }} />
+
+          {/* Golden Target Viewfinder Overlay */}
           <div className="viewfinder-frame">
             <div className="vf-corner vf-tl"></div>
             <div className="vf-corner vf-tr"></div>
@@ -185,18 +236,11 @@ export default function ModalScanner() {
             <div className="vf-laser-line"></div>
           </div>
 
-          {/* Fallback Display if Camera is Loading or Blocked */}
-          {cameraState === 'initializing' && (
+          {/* Camera Error / Fallback State */}
+          {cameraError && (
             <div className="vf-camera-overlay">
-              <Camera size={28} className="vf-cam-icon animate-pulse" />
-              <span>Iniciando cámara...</span>
-            </div>
-          )}
-
-          {cameraState === 'blocked' && (
-            <div className="vf-camera-overlay vf-blocked">
-              <AlertCircle size={28} className="text-yellow" />
-              <span className="vf-blocked-text">{errorMessage}</span>
+              <AlertCircle size={26} className="text-yellow" />
+              <p className="vf-error-msg">{cameraError}</p>
               <button 
                 type="button" 
                 className="btn-capture-photo"
@@ -208,8 +252,8 @@ export default function ModalScanner() {
             </div>
           )}
 
-          {/* Flip Camera Control if active */}
-          {cameraState === 'active' && (
+          {/* Flip camera button */}
+          {cameraActive && (
             <button 
               type="button" 
               className="btn-flip-cam"
@@ -229,7 +273,7 @@ export default function ModalScanner() {
           accept="image/*" 
           capture="environment"
           style={{ display: 'none' }}
-          onChange={handleFileUpload}
+          onChange={handlePhotoFile}
         />
 
         {/* Quick Simulation Bar for Testing Any Station Instantly */}
@@ -255,7 +299,7 @@ export default function ModalScanner() {
 
         <div className="scanner-footer-note">
           <ShieldCheck size={14} className="text-green" />
-          <span>Compatible con cámaras móviles y funcionamiento offline.</span>
+          <span>Detección automática en tiempo real • Sin división de pantalla.</span>
         </div>
 
       </div>
