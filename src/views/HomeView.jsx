@@ -93,7 +93,7 @@ export default function HomeView() {
             <div>
               <span className="greeting-sub">Parque Nacional Waraira Repano</span>
               <h2 className="greeting-title">
-                Hola, <span className="highlight-green">{user.name.split(' ')[0]}</span>
+                Hola, <span className="highlight-yellow">{user.name.split(' ')[0]}</span>
               </h2>
             </div>
             <div 

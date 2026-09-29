@@ -259,15 +259,16 @@ h1, h2, h3, h4 {
 }
 
 .nav-link-btn.active {
-  background: rgba(34, 197, 94, 0.15);
-  color: var(--c-green-400);
-  border-color: rgba(34, 197, 94, 0.3);
+  background: rgba(234, 179, 8, 0.18);
+  color: var(--c-yellow-400);
+  border-color: rgba(234, 179, 8, 0.45);
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.25);
 }
 
 .nav-link-btn.highlight-active {
-  background: rgba(234, 179, 8, 0.15);
+  background: rgba(234, 179, 8, 0.2);
   color: var(--c-yellow-400);
-  border-color: rgba(234, 179, 8, 0.4);
+  border-color: rgba(234, 179, 8, 0.5);
 }
 
 .navbar-right-actions {
@@ -509,15 +510,16 @@ h1, h2, h3, h4 {
 }
 
 .btn-splash-glow {
-  background: linear-gradient(135deg, var(--c-green-500), #047857);
+  background: linear-gradient(135deg, var(--c-yellow-500), #d97706);
   border: none;
-  color: #fff;
-  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
+  color: #000;
+  font-weight: 800;
+  box-shadow: 0 4px 18px rgba(234, 179, 8, 0.45);
 }
 
 .btn-splash-glow:hover {
   transform: translateY(-1px);
-  box-shadow: 0 6px 22px rgba(34, 197, 94, 0.55);
+  box-shadow: 0 6px 24px rgba(234, 179, 8, 0.65);
 }
 
 /* ==========================================================================
@@ -719,7 +721,7 @@ h1, h2, h3, h4 {
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1px;
-  color: var(--c-green-400);
+  color: var(--c-yellow-400);
   margin-bottom: 4px;
 }
 
@@ -775,9 +777,9 @@ h1, h2, h3, h4 {
 }
 
 .search-scan-trigger-btn {
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.35);
-  color: var(--c-green-400);
+  background: rgba(234, 179, 8, 0.16);
+  border: 1px solid rgba(234, 179, 8, 0.45);
+  color: var(--c-yellow-400);
   padding: 10px 18px;
   border-radius: var(--radius-lg);
   font-size: 13px;
@@ -791,8 +793,8 @@ h1, h2, h3, h4 {
 }
 
 .search-scan-trigger-btn:hover {
-  background: var(--c-green-500);
-  color: #fff;
+  background: var(--c-yellow-500);
+  color: #000;
 }
 
 /* Category Filter Chips */
@@ -834,11 +836,15 @@ h1, h2, h3, h4 {
 }
 
 .cat-chip-btn.active {
-  background: linear-gradient(135deg, var(--c-green-500), #047857);
+  background: linear-gradient(135deg, var(--c-yellow-500), #d97706);
   border-color: transparent;
-  color: #fff;
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+  color: #000;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(234, 179, 8, 0.4);
+}
+
+.cat-chip-btn.active svg {
+  color: #000;
 }
 
 /* Stations Header */
@@ -866,7 +872,7 @@ h1, h2, h3, h4 {
 .link-posters-btn {
   background: transparent;
   border: none;
-  color: var(--c-green-400);
+  color: var(--c-yellow-400);
   font-size: 12px;
   font-weight: 700;
   display: inline-flex;
@@ -907,7 +913,8 @@ h1, h2, h3, h4 {
 
 .checkpoint-station-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(74, 222, 128, 0.4);
+  border-color: rgba(250, 204, 21, 0.45);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.7), 0 0 16px rgba(234, 179, 8, 0.25);
 }
 
 .csc-bg-frame {
@@ -944,9 +951,9 @@ h1, h2, h3, h4 {
 }
 
 .rating-tag {
-  background: rgba(6, 20, 11, 0.8);
+  background: rgba(6, 20, 11, 0.85);
   backdrop-filter: blur(8px);
-  border: 1px solid var(--border-glass);
+  border: 1px solid rgba(250, 204, 21, 0.35);
   padding: 3px 8px;
   border-radius: 999px;
   font-size: 11px;
@@ -1002,8 +1009,8 @@ h1, h2, h3, h4 {
 
 .csc-alt-badge {
   font-size: 11px;
-  color: var(--c-green-400);
-  font-weight: 700;
+  color: var(--c-yellow-400);
+  font-weight: 800;
   display: block;
   margin-bottom: 2px;
   white-space: nowrap;
@@ -1034,20 +1041,21 @@ h1, h2, h3, h4 {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--c-green-500), #047857);
+  background: linear-gradient(135deg, var(--c-yellow-500), #d97706);
   border: none;
-  color: #fff;
+  color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0 !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  transition: transform 0.2s;
+  box-shadow: 0 4px 14px rgba(234, 179, 8, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .checkpoint-station-card:hover .csc-cta-btn {
-  transform: scale(1.1);
+  transform: scale(1.12);
+  box-shadow: 0 6px 20px rgba(234, 179, 8, 0.6);
 }
 
 /* Scanner Promo Banner */
@@ -1072,9 +1080,9 @@ h1, h2, h3, h4 {
 }
 
 .promo-badge {
-  background: rgba(34, 197, 94, 0.15);
-  color: var(--c-green-400);
-  border: 1px solid rgba(34, 197, 94, 0.3);
+  background: rgba(234, 179, 8, 0.18);
+  color: var(--c-yellow-400);
+  border: 1px solid rgba(234, 179, 8, 0.4);
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 10px;
@@ -1095,19 +1103,20 @@ h1, h2, h3, h4 {
 }
 
 .btn-promo-scan {
-  background: linear-gradient(135deg, var(--c-green-500), #047857);
+  background: linear-gradient(135deg, var(--c-yellow-500), #d97706);
   border: none;
-  color: #fff;
+  color: #000;
   padding: 10px 20px;
   border-radius: var(--radius-md);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
   width: fit-content;
   margin-top: 4px;
+  box-shadow: 0 4px 14px rgba(234, 179, 8, 0.4);
 }
 
 .spb-qr-frame {
@@ -2883,7 +2892,12 @@ h1, h2, h3, h4 {
 }
 
 .bnav-item.active {
-  color: var(--c-green-400);
+  color: var(--c-yellow-400);
+  font-weight: 700;
+}
+
+.bnav-item.active svg {
+  filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.7));
 }
 
 .bnav-icon-wrap {
@@ -2908,12 +2922,12 @@ h1, h2, h3, h4 {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--c-green-500), #047857);
+  background: linear-gradient(135deg, var(--c-yellow-500), #d97706);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(34, 197, 94, 0.45);
+  color: #000;
+  box-shadow: 0 4px 16px rgba(234, 179, 8, 0.5), 0 0 10px rgba(250, 204, 21, 0.35);
 }
 
 /* Visibility Utilities */
